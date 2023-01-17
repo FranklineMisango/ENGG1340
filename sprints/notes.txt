@@ -6,4 +6,16 @@ rm -rf dir --> forcefully deletes a dir which is not empty and its subdirectorie
 touch file.txt --> creates an empty file called touch
 cp -r dir1 dir2 --> copies dir1 into dir2 with all its subdirectories
 file >> file1 --> copies everything from file1 to file2
+------
+GIT COMMANDS
+---------
+git add . --> add all repos either commited or not committed
+git branch xyz ---> create a new branch 
+git checkout xyz --> checkout to a new branch
+git merge branchxyz -m "Changes to lets say files x and y" --> merge to a branch called xyz from main/master etc and viceversa
+git delete -d branch ---> delete a merged branch
+git cherry-pick xyz0123 --> git merge only a specific commit
+git merge --no-ff branch --> git merge a branch only fastforward
+git merge --ff-only branchname --> merge a branch with a fast forward
+git merge --abort --> stop merge incase of conflicts
 
