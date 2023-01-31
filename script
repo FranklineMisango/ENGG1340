@@ -1,0 +1,3 @@
+#!/bin/root
+sudo xinput disable 9
+sudo xinput enable 9
