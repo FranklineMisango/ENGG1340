@@ -1,0 +1,7 @@
+assign.cpp: In function ‘int main()’:
+assign.cpp:9:25: error: expected ‘;’ before ‘}’ token
+    9 |    cout << a+b+c << endl
+      |                         ^
+      |                         ;
+   10 | }
+      | ~                        
