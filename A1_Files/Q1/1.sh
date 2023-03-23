@@ -1,46 +1,24 @@
 #!/bin/bash
 
-# check if timestamp argument is provided
-if [ -z "$1" ]; then
-  echo "Please provide a timestamp argument"
-  exit 1
-fi
+temporary_timestamp=$1
 
-# initialize associative array
-declare -A name_counts
-declare -A exit
+#Log file extraction and counting --> used sort and awK
+gateway_counts=$(grep "${temporary_timestamp}" Log_* | awk -F',' '{ if ($4 == "Enter") print $3 "," $2 }' | sort -u | awk -F',' '{seen[$1]++} END {for (i in seen) {print seen[i], i}}')
 
-# loop through all log files and count occurrences of gateway names
-for logfile in Log_*.log; do
-  while read line; do
-    timestamp=$(echo "$line" | cut -d, -f1)
-    name=$(echo "$line" | cut -d, -f3)
-    event=$(echo "$line" | cut -d, -f4)
-    
-    # check if the timestamp matches the prefix
-    if [[ $timestamp == $1* ]]; then
-      # increment the count for the gateway name
-      ((name_counts["$name"]++))
-    fi
-  done < <(grep -E "^$1.*,(Enter|Exit)" "$logfile")
-done
-
-# check if any gateway names were found
-if [ ${#name_counts[@]} -eq 0 ]; then
+# If No Matching records, print the message and exit
+if [ -z "${gateway_counts}" ]; then
   echo "No records found"
   exit 0
 fi
 
-# find the maximum count
-max_count=$(printf '%s\n' "${name_counts[@]}" | sort -rn | head -n1)
+# Extract the maximum count from the gateway_counts output, and extract the lines that have that count
+max_count=$(echo "${gateway_counts}" | awk '{ print $1 }' | sort -n | tail -n1)
+max_gateway_lines=$(echo "${gateway_counts}" | awk -v max_count="${max_count}" '{ if ($1 == max_count) print }')
 
-# loop through the gateway names with the maximum count and sort them lexicographically
-while IFS= read -r line; do
-  if [[ $(echo "$line" | awk '{print $1}') -eq $max_count ]]; then
-    echo "$line"
-    exit 0
-  fi
-done < <(for name in "${!name_counts[@]}"; do echo "${name_counts["$name"]} $name"; done | sort -rn -k1,1 -k2,2)
+# Sort the max_gateway_lines output in descending lexicographical order of gateway names
+sorted_max_gateway_lines=$(echo "${max_gateway_lines}" | sort -r -k2)
 
-# if no gateway names have maximum count, then print the first entry
-echo "${name_counts[$(echo "${!name_counts[@]}" | head -n1)]} $(echo "${!name_counts[@]}" | head -n1)"
+# Output the gateway counts and names, with the count first then the number + Direction + Gate 
+echo "${sorted_max_gateway_lines}" | awk '{ print $1 " " $2 " "$3 }'
+
+exit 0

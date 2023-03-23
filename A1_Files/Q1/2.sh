@@ -1,54 +1,27 @@
 #!/bin/bash
 
-# check if timestamp argument is provided
-if [ -z "$1" ]; then
-  echo "Please provide a timestamp argument"
-  exit 1
-fi
+# Read the timestamp prefix from the first command line argument
+timestamp_prefix=$1
 
-# initialize associative arrays
-declare -A enter_counts
-declare -A exit_counts
-declare -A name_counts
+# Extract the log entries matching the timestamp prefix, and extract the GatewayName and SmartcardID fields from each entry
+# We use awk to extract the GatewayName and SmartcardID fields from each log entry, and sort and count them using sort and uniq
+# The resulting output has one line per GatewayName, with the count of distinct SmartcardIDs that entered via that gateway
+gateway_counts=$(grep "${timestamp_prefix}" Log_* | awk -F',' '{ if ($4 == "Enter") print $3 "," $2 }' | sort -u | awk -F',' '{seen[$1]++} END {for (i in seen) {print seen[i], i}}')
 
-# loop through all log files and count occurrences of gateway names
-for logfile in Log_*.log; do
-  while read line; do
-    timestamp=$(echo "$line" | cut -d, -f1)
-    name=$(echo "$line" | cut -d, -f3)
-    event=$(echo "$line" | cut -d, -f4)
-
-    # check if the timestamp matches the prefix
-    if [[ $timestamp == $1* && $event == "Enter" ]]; then
-      # increment the count for the gateway name
-      ((enter_counts["$name"]++))
-    elif [[ $timestamp == $1* && $event == "Exit" ]]; then
-      ((exit_counts["$name"]++))
-    fi
-
-  done < <(grep -E "^$1.*,(Enter|Exit)" "$logfile" | grep "$1")
-done
-
-# check if any gateway names were found
-if [ ${#enter_counts[@]} -eq 0 ]; then
+# If there were no matching records, print a message and exit
+if [ -z "${gateway_counts}" ]; then
   echo "No records found"
   exit 0
 fi
 
-# compute the net counts for each gateway name
-for name in "${!enter_counts[@]}"; do
-  enter_count=${enter_counts["$name"]}
-  exit_count=${exit_counts["$name"]:="0"} # set default value to 0 if no exit count
-  net_count=$((enter_count - exit_count))
-  name_counts["$name"]=$net_count
-done
+# Extract the maximum count from the gateway_counts output, and extract the lines that have that count
+max_count=$(echo "${gateway_counts}" | awk '{ print $1 }' | sort -n | tail -n1)
+max_gateway_lines=$(echo "${gateway_counts}" | awk -v max_count="${max_count}" '{ if ($1 == max_count) print }')
 
-# find the maximum count
-max_count=$(printf '%s\n' "${name_counts[@]}" | sort -rn | head -n1)
+# Sort the max_gateway_lines output in descending lexicographical order of gateway names
+sorted_max_gateway_lines=$(echo "${max_gateway_lines}" | sort -r -k2)
 
-# loop through all gateway names and select the ones with the maximum count
-while IFS= read -r line; do
-  if [[ $(echo "$line" | awk '{print $1}') -eq $max_count ]]; then
-    echo "$line"
-  fi
-done < <(for name in "${!name_counts[@]}"; do echo "${name_counts["$name"]} $name"; done | sort -rn -k1,1 -k2,2)
+# Output the gateway counts and names, with the count first
+echo "${sorted_max_gateway_lines}" | awk '{ print $1 " " $2 " "$3 }'
+
+exit 0
