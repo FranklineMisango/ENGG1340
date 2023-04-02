@@ -1,33 +1,41 @@
 #include <iostream>
-#include <cmath>
-
+#include <math.h>
 using namespace std;
 
-int main() {
-    int i;
-    cin >> i;
+int main(){
+int num, currPos;
+cin >> num;
+int arr[15];
 
-    int arr[20];
-    for (int j = 0; j < i && j < 15; j++) {
-        arr[j] = j * j;
-    }
-    for (int j = i; j < 15; j++) {
-        arr[j] = 0;
-    }
-    for (int j = 15; j < i + 5 && j < 20; j++) {
-        arr[j] = pow(3, j - 15);
-    }
-    for (int j = i + 5; j < 20; j++) {
-        arr[j] = pow(3, j - i - 2);
-    }
-    for (int j = 0; j < 20; j++) {
-        if (j < 6) {
-            cout << "0 ";
-        } else {
-            cout << arr[j] << " ";
-        }
-    }
-    cout << endl;
+//initializing if num is more than or equal to 15
+if (num >= 15){
+    num = 15;
+}
 
-    return 0;
+//powering first num
+for (int i = 0; i < num; i++){
+    arr[i] = i * i;
+}
+currPos = num;
+
+if(currPos <= 10){
+    for (int i = currPos; i < currPos + 5; i++){
+        arr[i] = 0;
+    }
+    for (int i = currPos + 5; i < 15; i++){
+        arr[i] = pow(3,i);
+    }
+} else if(currPos >= 10 && currPos < 15){
+    for (int i = currPos; i < currPos + 5; i++){
+        arr[i] = 0;
+    }
+}
+
+//printing out the 15 values
+for (int i = 0; i < 15; i++){
+    cout << arr[i] << " ";
+}
+
+return 0;
+
 }
