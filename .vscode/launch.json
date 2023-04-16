@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/misango/hku/ENGG1340/A1_Files",
-      "program": "/home/misango/hku/ENGG1340/A1_Files/build/Debug/outDebug",
+      "cwd": "/home/misango/hku/ENGG1340",
+      "program": "/home/misango/hku/ENGG1340/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
