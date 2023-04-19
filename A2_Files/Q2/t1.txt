@@ -1,0 +1,5 @@
+Cab AbB CAB Ab CaB ABc aBb AB
+cAb caB aBcAB CAB ABcAb AbcAb
+aBCAB AB ABcAb aBCaB ABCAB Abb
+aBC abC AbC ABCAB abCab ABC
+aBCAB ABcAB AB cAb
