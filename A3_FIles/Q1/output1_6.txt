@@ -1,0 +1,3 @@
+Maximum 100
+Median 92.5
+Minimum 79
