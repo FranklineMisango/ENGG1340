@@ -1,12 +1,13 @@
-CC=g++
-CFLAGS=-Wall -g -ggdb
-SOURCES=example.cpp SimpleChess.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
+CXX = g++
+CXXFLAGS = -pedantic-errors -std=c++11
 
-main: example.cpp
-	$(CC) $(CFLAGS) -c $(SOURCES)
-	$(CC) $(OBJECTS) $(CFLAGS) -o chess
-	rm -rf *.o
+all: alien
+
+alien: alien.o
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+alien.o: alien.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJECTS) chess
+	rm -f *.o alien
