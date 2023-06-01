@@ -1,0 +1,8 @@
+InsertStudent 2022001 Chim 100
+InsertStudent 2022004 Qian 97
+InsertStudent 2022003 Jolly 88
+InsertStudent 2022005 Kevin 81
+InsertStudent 2022002 Kiu 97
+InsertStudent 2022006 Tim 79
+PrintAll
+

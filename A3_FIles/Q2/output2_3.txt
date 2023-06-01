@@ -1,0 +1,9 @@
+Element 7 found
+Element 6 found
+Element 10 found
+Element 5 not found
+Element 11 not found
+Element 5 found
+Minimum element is 5
+Maximum element is 10
+0 5 6 7 8 10 9999 
