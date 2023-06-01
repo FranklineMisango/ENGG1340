@@ -13,7 +13,7 @@ using namespace std;
 const int MAX_ALIENS = 30; // Maximum number of aliens
 const int MAX_HEALTH = 100; // Our health can only be 100 bars
 const int MAX_SHIELD = 50; //Shield status can only be 50
-const int MIN_HEALTH = 40; //The Minimum health generation should be 40
+const int MIN_HEALTH = 50; //The Minimum health generation should be 40
 const int MIN_SHIELD = 25; // The Minimum Random generation for shields < 25
 const int MIN_ALIENS = 10; //The Minimum Aliens we can generate for the random function is 10
 const int SHIP_HEALTH = 100; // Initial health of the ship
@@ -105,7 +105,7 @@ void loadSavedGame() {
     }
     infile >> health >> aliens >> shield;
     infile.close();
-    cout << "The saved game had " << health << " Health bars , " << shield << " shield(s)" << "and " << aliens << " Remaining alien(s)" << endl;
+    cout << "The saved game had " << health << " Health bar(s) , " << shield << " shield(s)" << "and " << aliens << " Remaining alien(s)" << endl;
     playGame(health, shield, aliens);
 }
 
@@ -137,7 +137,7 @@ int fightAliens(int& health, int& shield, int& aliens) {
         cout << "We are now " << aliens << " alien(s) remaining." << endl;
         if (shield <= 0) {
              cout <<"**|----------------------------WARNING---------------------------------|**" << endl;
-             cout <<"**|WARNING You have 0 shields, You can click Pause to Acess Recharge...|**" << endl;
+             cout <<"**|WARNING You have 0 shields, You can click Pause to Access Recharge...|**" << endl;
              cout <<"**|However, If you Recharge, Be warned.................................|**" << endl;
              cout <<"**|We will also Multiply and give you a challenge!.....................|**" << endl;
              cout <<"**|----------------------------WARNING---------------------------------|**" << endl;
