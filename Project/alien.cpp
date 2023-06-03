@@ -92,7 +92,6 @@ void readRules(){
     
 }
 
-
 // Loads a saved game
 void loadSavedGame() {
     cout <<"Loading a Saved Game...."<<endl;
@@ -137,7 +136,7 @@ int fightAliens(int& health, int& shield, int& aliens) {
         cout << "We are now " << aliens << " alien(s) remaining." << endl;
         if (shield <= 0) {
              cout <<"**|----------------------------WARNING---------------------------------|**" << endl;
-             cout <<"**|WARNING You have 0 shields, You can click Pause to Access Recharge...|**" << endl;
+             cout <<"**|WARNING You have 0 shields, You can click Pause to Access Recharge..|**" << endl;
              cout <<"**|However, If you Recharge, Be warned.................................|**" << endl;
              cout <<"**|We will also Multiply and give you a challenge!.....................|**" << endl;
              cout <<"**|----------------------------WARNING---------------------------------|**" << endl;
