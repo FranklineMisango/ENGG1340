@@ -1,9 +1,12 @@
 CXX = g++
 CXXFLAGS = -pedantic-errors -std=c++11
 
-all: alien
+SOURCES = alien.cpp
+EXEC = $(SOURCES:.c++)
 
-alien: alien.o
+all: $(EXEC)
+
+%: %.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 alien.o: alien.cpp
@@ -11,3 +14,5 @@ alien.o: alien.cpp
 
 clean:
 	rm -f *.o alien
+
+.PHONY:all clean

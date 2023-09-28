@@ -172,21 +172,40 @@ int fightAliens(int& health, int& shield, int& aliens) {
     }
     if (health <= 0) {
         cout << "Your ship has been Captured as by the aliens. Your remaining health bars are " << health << ". The Game is over." << endl;
+        cout << "1. Restart New game" << endl;
+        cout << "2. Quit the program" <<endl;
+        int options;
+        cin >> options;
+        switch(options){
+            case 1:
+                newGame();
+            case 2:
+                quitProgram();
+        }
         quitProgram();
     }
     return 0;
 }
 
 // Attacking Alien ship
-//The logic here is aliens decrease with our ship damage
+// The logic here is aliens decrease with our ship damage
+// Remove the logic when alien == 0
 void shipAttack(int& health, int& aliens) {
     int damage = HEALTH_DAMAGE;
     if (aliens < 3) {
         damage *= 2;
     }
-    aliens -= damage / ALIEN_DAMAGE; //Aliens should reduce by 2 
-    cout << "After your attack on us, we have reduced to " << aliens << " alien(s)" <<endl;
+
+    // Check if applying the damage would make aliens less than or equal to 0
+    if (aliens <= damage / ALIEN_DAMAGE) {
+        aliens = 0;
+        cout << "All the aliens have died......1.2.3!!" << endl;
+    } else {
+        aliens -= damage / ALIEN_DAMAGE;
+        cout << "After your attack on us, we have reduced to " << aliens << " alien(s)" << endl;
+    }
 }
+
 
 // Attacks the ship 
 void alienAttack(int& health, int& shield) {
@@ -251,6 +270,7 @@ int playGame(int& health, int& shield, int& aliens) {
         cout << "3. Save Game" <<endl;
         cout << "4. Read Rules" <<endl;
         cout << "5. Quit " << endl;
+        cout << "6. Restart..All progress will be lost" <<endl;
         cout << "Enter your choice: ";
         cin >> choice;
         switch(choice) {
@@ -285,6 +305,8 @@ int playGame(int& health, int& shield, int& aliens) {
                 break;
             case 5:
                 quitProgram();
+            case 6:
+                newGame();
             default:
                 cout << "Invalid choice. Please try again." << endl;
         }
@@ -306,6 +328,6 @@ void newGame() {
     if (health > 0) {
         cout << "Congratulations! You have defeated all the aliens and saved the universe!" << endl;
     }
-    cout << "Your game is being saved" << endl;
+    cout << "Saving....." << endl;
     saveGame(health, aliens, shield);
 }
